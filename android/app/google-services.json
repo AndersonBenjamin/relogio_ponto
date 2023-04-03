@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "196881712981",
+    "firebase_url": "https://ponto-551a5-default-rtdb.firebaseio.com",
+    "project_id": "ponto-551a5",
+    "storage_bucket": "ponto-551a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196881712981:android:d8b6ac9fe03457c33611dc",
+        "android_client_info": {
+          "package_name": "com.example.firebase_teste"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196881712981-1tsmr9716bnmpiro33gequha52ua6t3f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDupTvflO2dAmLf65OgFv8ASpkhNX6OYJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196881712981-1tsmr9716bnmpiro33gequha52ua6t3f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "196881712981-5goklr613efsm7ri2307h4qhk9due0m5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firebaseTeste"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196881712981:android:0f64fd7def24ec153611dc",
+        "android_client_info": {
+          "package_name": "com.example.relogio_ponto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196881712981-1tsmr9716bnmpiro33gequha52ua6t3f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDupTvflO2dAmLf65OgFv8ASpkhNX6OYJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196881712981-1tsmr9716bnmpiro33gequha52ua6t3f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "196881712981-5goklr613efsm7ri2307h4qhk9due0m5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firebaseTeste"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196881712981:android:80b1a71a5d77f6283611dc",
+        "android_client_info": {
+          "package_name": "com.google.firebase.presents.relogio_de_ponto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196881712981-1tsmr9716bnmpiro33gequha52ua6t3f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDupTvflO2dAmLf65OgFv8ASpkhNX6OYJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196881712981-1tsmr9716bnmpiro33gequha52ua6t3f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "196881712981-5goklr613efsm7ri2307h4qhk9due0m5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firebaseTeste"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
