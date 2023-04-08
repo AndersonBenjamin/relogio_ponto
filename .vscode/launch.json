@@ -4,25 +4,23 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "relogio_ponto",
             "request": "launch",
-            "type": "dart",
-            "deviceId": "chrome",
+            "type": "dart"
         },
         {
             "name": "relogio_ponto (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile",
-            "deviceId": "chrome"
+            "flutterMode": "profile"
         },
         {
             "name": "relogio_ponto (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release",
-            "deviceId": "chrome"
+            "flutterMode": "release"
         },
     ]
 }
