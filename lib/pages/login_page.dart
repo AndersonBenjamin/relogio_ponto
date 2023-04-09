@@ -1,18 +1,46 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:relogio_ponto/components/my_button.dart';
 import 'package:relogio_ponto/components/my_textfield.dart';
-import 'package:relogio_ponto/components/my_textfield.dart';
 import 'package:relogio_ponto/components/square_tile.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   //text editing controllers
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   //sign user in method
-  void singUserIn() {}
+  void singUserIn() async {
+    //show loading circle
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password buddy');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +71,8 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 25),
                 //username textfild
                 MyTextFild(
-                  controller: usernameController,
-                  hintText: 'Userame',
+                  controller: emailController,
+                  hintText: 'Email',
                   obscureText: false,
                 ),
 

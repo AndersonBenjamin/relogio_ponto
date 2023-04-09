@@ -44,39 +44,44 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDtb9YMEhL1ni73ap6OdDidm5P1f965Xfk',
-    appId: '1:245605805965:web:4261acaef84222cffe57c4',
-    messagingSenderId: '245605805965',
-    projectId: 'authentication-5d5fc',
-    authDomain: 'authentication-5d5fc.firebaseapp.com',
-    storageBucket: 'authentication-5d5fc.appspot.com',
+    apiKey: 'AIzaSyC1yU-7YK36zsWea2YuIDRbeCiZ1eORIAc',
+    appId: '1:196881712981:web:9ee43240739048d03611dc',
+    messagingSenderId: '196881712981',
+    projectId: 'ponto-551a5',
+    authDomain: 'ponto-551a5.firebaseapp.com',
+    databaseURL: 'https://ponto-551a5-default-rtdb.firebaseio.com',
+    storageBucket: 'ponto-551a5.appspot.com',
+    measurementId: 'G-ZKKG37EVD2',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCsImC5Qinh9Cqv0icMLYM79iX8g1riK4o',
-    appId: '1:245605805965:android:69c3b4d2e111a5bdfe57c4',
-    messagingSenderId: '245605805965',
-    projectId: 'authentication-5d5fc',
-    storageBucket: 'authentication-5d5fc.appspot.com',
+    apiKey: 'AIzaSyDupTvflO2dAmLf65OgFv8ASpkhNX6OYJQ',
+    appId: '1:196881712981:android:0f64fd7def24ec153611dc',
+    messagingSenderId: '196881712981',
+    projectId: 'ponto-551a5',
+    databaseURL: 'https://ponto-551a5-default-rtdb.firebaseio.com',
+    storageBucket: 'ponto-551a5.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBgvbhX8gLr1wL9bvpSftnXCvahAxEb9vE',
-    appId: '1:245605805965:ios:9dda4ba074353043fe57c4',
-    messagingSenderId: '245605805965',
-    projectId: 'authentication-5d5fc',
-    storageBucket: 'authentication-5d5fc.appspot.com',
-    iosClientId: '245605805965-59m1dhtkgbdp142aqu76gdc7dnahe1d9.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBNkYExbJDe8MQs7PKiJTvIJQQsrGdVixI',
+    appId: '1:196881712981:ios:0b32071a6906ddd63611dc',
+    messagingSenderId: '196881712981',
+    projectId: 'ponto-551a5',
+    databaseURL: 'https://ponto-551a5-default-rtdb.firebaseio.com',
+    storageBucket: 'ponto-551a5.appspot.com',
+    iosClientId: '196881712981-996a6bolittms6a0hi1b85ig238dcph2.apps.googleusercontent.com',
     iosBundleId: 'com.example.relogioPonto',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBgvbhX8gLr1wL9bvpSftnXCvahAxEb9vE',
-    appId: '1:245605805965:ios:9dda4ba074353043fe57c4',
-    messagingSenderId: '245605805965',
-    projectId: 'authentication-5d5fc',
-    storageBucket: 'authentication-5d5fc.appspot.com',
-    iosClientId: '245605805965-59m1dhtkgbdp142aqu76gdc7dnahe1d9.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBNkYExbJDe8MQs7PKiJTvIJQQsrGdVixI',
+    appId: '1:196881712981:ios:0b32071a6906ddd63611dc',
+    messagingSenderId: '196881712981',
+    projectId: 'ponto-551a5',
+    databaseURL: 'https://ponto-551a5-default-rtdb.firebaseio.com',
+    storageBucket: 'ponto-551a5.appspot.com',
+    iosClientId: '196881712981-996a6bolittms6a0hi1b85ig238dcph2.apps.googleusercontent.com',
     iosBundleId: 'com.example.relogioPonto',
   );
 }

@@ -1,1 +1,5 @@
-A página de login foi feita utilizando este vídeo: https://www.youtube.com/watch?v=Dh-cTQJgM-Q
+A pï¿½gina de login foi feita utilizando este vï¿½deo: https://www.youtube.com/watch?v=Dh-cTQJgM-Q
+
+Os usuarios cadastrados no firebase foram:
+    anderson.targino@teste.com.br   : mudar123
+    gustavo.targino@teste.com.br   : mudar123
