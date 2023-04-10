@@ -4,21 +4,22 @@ import 'package:relogio_ponto/components/my_button.dart';
 import 'package:relogio_ponto/components/my_textfield.dart';
 import 'package:relogio_ponto/components/square_tile.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   //text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  //sign user in method
-  void singUserIn() async {
+  //sign user up method
+  void singUserUp() async {
     //show loading circle
     showDialog(
         context: context,
@@ -28,11 +29,18 @@ class _LoginPageState extends State<LoginPage> {
           );
         });
 
+    //try creating the user
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      //check if passwork is confirmed
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } else {
+        //show error message, password dont match
+        showErrorMessage("Passwords dont match");
+      }
     } on FirebaseAuthException catch (e) {
       showErrorMessage(e.code);
     }
@@ -61,17 +69,19 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 50),
+                SizedBox(height: 25),
 
                 // logo
                 Icon(
                   Icons.lock,
-                  size: 100,
+                  size: 50,
                 ),
 
-                // welcome back, you've been missed!
+                const SizedBox(height: 25),
+
+                // Let \'s create an account for you!
                 Text(
-                  'Welcome back you\'ve missed',
+                  'Let \'s create an account for you!',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -97,6 +107,14 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 10),
 
+                MyTextFild(
+                  controller: confirmPasswordController,
+                  hintText: 'Confirm password',
+                  obscureText: true,
+                ),
+
+                const SizedBox(height: 10),
+
                 //forgot password]
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -115,8 +133,8 @@ class _LoginPageState extends State<LoginPage> {
 
                 //sing in button
                 MyButton(
-                  text: "Sing Up",
-                  onTap: singUserIn,
+                  text: "Sing In",
+                  onTap: singUserUp,
                 ),
 
                 const SizedBox(height: 50),
@@ -166,12 +184,12 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Not a member?'),
+                    Text('Already have an account?'),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: widget.onTap,
                       child: const Text(
-                        'Register now',
+                        'Login now',
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
