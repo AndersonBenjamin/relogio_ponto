@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:relogio_ponto/components/my_button.dart';
 import 'package:relogio_ponto/components/my_textfield.dart';
 import 'package:relogio_ponto/components/square_tile.dart';
+import 'package:relogio_ponto/services/auth_servie.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -153,10 +154,16 @@ class _LoginPageState extends State<LoginPage> {
                 // google + apple sing in button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SquareTile(imagePath: 'lib/images/google_logo.png'),
+                  children: [
+                    SquareTile(
+                      onTap: () => AuthService().signWithGoogle(),
+                      imagePath: 'lib/images/google_logo.png',
+                    ),
                     const SizedBox(width: 25),
-                    SquareTile(imagePath: 'lib/images/apple_logo.png'),
+                    SquareTile(
+                      onTap: () {},
+                      imagePath: 'lib/images/apple_logo.png',
+                    ),
                   ],
                 ),
 
