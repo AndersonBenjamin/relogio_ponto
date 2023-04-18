@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:relogio_ponto/pages/auth_page.dart';
 import 'package:relogio_ponto/read_date/get_registers.dart';
 
 import '../drawerList.dart';
@@ -10,11 +11,14 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final user = FirebaseAuth.instance.currentUser!;
-  final ultimaMarcacao = 'Éntrada';
+  var dataHoraAtual = '';
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
   }
+
+  int paginaAtual = 1;
+  late PageController pc;
 
   List<String> registros = [];
 
@@ -29,22 +33,9 @@ class HomePage extends StatelessWidget {
         );
   }
 
-  Future getDateNow() async {
+  Future<dynamic> chekIn() async {
     var dataHoraAtual = DateTime.now().year.toString();
-    if (DateTime.now().month.toString().length == 1) {
-      dataHoraAtual += '0';
-    }
-    dataHoraAtual += DateTime.now().month.toString();
 
-    if (DateTime.now().day.toString().length == 1) {
-      dataHoraAtual += '0';
-    }
-    dataHoraAtual += DateTime.now().day.toString();
-    return dataHoraAtual;
-  }
-
-  Future chekIn() async {
-    var dataHoraAtual = DateTime.now().year.toString();
     if (DateTime.now().month.toString().length == 1) {
       dataHoraAtual += '0';
     }
@@ -55,20 +46,34 @@ class HomePage extends StatelessWidget {
     }
     dataHoraAtual += DateTime.now().day.toString();
 
-    await FirebaseFirestore.instance.collection('registros').add(
-        {'horario': dataHoraAtual, 'id_user': '123456', 'tipo': 'entrada'});
-  }
+    dataHoraAtual += ' ';
+    if (DateTime.now().hour.toString().length == 1) {
+      dataHoraAtual += '0';
+    }
+    dataHoraAtual += DateTime.now().hour.toString();
+    dataHoraAtual += ':';
+    if (DateTime.now().minute.toString().length == 1) {
+      dataHoraAtual += '0';
+    }
+    dataHoraAtual += DateTime.now().minute.toString();
+    dataHoraAtual += ':';
+    if (DateTime.now().second.toString().length == 1) {
+      dataHoraAtual += '0';
+    }
+    dataHoraAtual += DateTime.now().second.toString();
 
-  Future chekOut() async {
-    await FirebaseFirestore.instance
-        .collection('registros')
-        .add({'horario': DateTime.now(), 'id_user': '1234', 'tipo': 'saida'});
+    await FirebaseFirestore.instance.collection('registros').add({
+      'horario': dataHoraAtual,
+      'id_user': user.uid,
+      'e-mail': user.email,
+      'tipo': 'entrada'
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.orange, actions: [
+      appBar: AppBar(backgroundColor: Colors.grey, actions: [
         IconButton(
           onPressed: signUserOut,
           icon: Icon(Icons.logout),
@@ -79,35 +84,17 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FloatingActionButton.large(
-                  onPressed: chekIn,
-                  child: const Icon(Icons.punch_clock),
-                  backgroundColor: Colors.green,
-                ),
-                const Text('   Entrada'),
-              ],
+            const Text(
+              'Historico',
+              style: TextStyle(
+                letterSpacing: 5,
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+              ),
             ),
-            /* Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FloatingActionButton.large(
-                  onPressed: chekOut,
-                  child: const Icon(Icons.punch_clock_outlined),
-                  backgroundColor: Colors.red,
-                ),
-                const Text('     Saida'),
-              ],
-            ), */
-            //Row(
-
-            // mainAxisAlignment: MainAxisAlignment.center,
-            // children: [
-            //  Text('Ultimo registro: ' + DateTime.now().toString()),
-            //  ],
-            //),
+            const Divider(
+              color: Colors.black54,
+            ),
             Expanded(
               child: FutureBuilder(
                 future: getLasCheck(),
@@ -126,10 +113,35 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: chekIn,
-        tooltip: 'Increment',
-        child: const Icon(Icons.history),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          chekIn();
+        },
+        icon: Icon(Icons.history),
+        label: Text(
+          'REGISTRAR',
+          style: TextStyle(
+            letterSpacing: 0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: paginaAtual,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.history), label: 'Historico'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Ajustes'),
+        ],
+        onTap: (pagina) {
+          pc.animateToPage(
+            pagina,
+            duration: Duration(milliseconds: 400),
+            curve: Curves.ease,
+          );
+        },
+        backgroundColor: Colors.grey,
       ),
     );
   }
