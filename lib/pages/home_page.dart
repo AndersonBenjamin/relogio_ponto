@@ -11,19 +11,38 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final user = FirebaseAuth.instance.currentUser!;
-  var dataHoraAtual = '';
+  String tipoRegistro = 'Entrada';
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
+  }
+
+  getDateTimeNow() async {
+    DateTime dateToday = DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        DateTime.now().hour,
+        DateTime.now().minute,
+        DateTime.now().second,
+        DateTime.now().millisecond);
+
+    return dateToday;
   }
 
   int paginaAtual = 1;
   late PageController pc;
 
   List<String> registros = [];
+  List<String> LastCheck = [];
 
-  Future getLasCheck() async {
-    await FirebaseFirestore.instance.collection('registros').get().then(
+  Future getCheck() async {
+    await FirebaseFirestore.instance
+        .collection('registros')
+        //.where('id_user', isEqualTo: user.uid)
+        .orderBy('horario', descending: true)
+        .get()
+        .then(
           (snapshot) => snapshot.docs.forEach(
             (element) {
               print(element.reference);
@@ -33,40 +52,46 @@ class HomePage extends StatelessWidget {
         );
   }
 
+  Future getLastCheck() async {
+    await FirebaseFirestore.instance
+        .collection('registros')
+        .orderBy('horario', descending: true)
+        .limit(1)
+        .get()
+        .then(
+          (snapshot) => snapshot.docs.forEach(
+            (element) {
+              print(element.reference);
+              LastCheck.add(element.reference.id);
+              Map<String, dynamic> data =
+                  element.data() as Map<String, dynamic>;
+              print('${data['tipo']}');
+              if (data['tipo'] == 'Entrada') {
+                tipoRegistro = 'Saida';
+              } else {
+                tipoRegistro = 'Entrada';
+              }
+            },
+          ),
+        );
+  }
+
   Future<dynamic> chekIn() async {
-    var dataHoraAtual = DateTime.now().year.toString();
-
-    if (DateTime.now().month.toString().length == 1) {
-      dataHoraAtual += '0';
-    }
-    dataHoraAtual += DateTime.now().month.toString();
-
-    if (DateTime.now().day.toString().length == 1) {
-      dataHoraAtual += '0';
-    }
-    dataHoraAtual += DateTime.now().day.toString();
-
-    dataHoraAtual += ' ';
-    if (DateTime.now().hour.toString().length == 1) {
-      dataHoraAtual += '0';
-    }
-    dataHoraAtual += DateTime.now().hour.toString();
-    dataHoraAtual += ':';
-    if (DateTime.now().minute.toString().length == 1) {
-      dataHoraAtual += '0';
-    }
-    dataHoraAtual += DateTime.now().minute.toString();
-    dataHoraAtual += ':';
-    if (DateTime.now().second.toString().length == 1) {
-      dataHoraAtual += '0';
-    }
-    dataHoraAtual += DateTime.now().second.toString();
+    DateTime dateToday = DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        DateTime.now().hour,
+        DateTime.now().minute,
+        DateTime.now().second,
+        DateTime.now().millisecond);
+    String sDateTimeNow = dateToday.toString();
 
     await FirebaseFirestore.instance.collection('registros').add({
-      'horario': dataHoraAtual,
+      'horario': sDateTimeNow,
       'id_user': user.uid,
       'e-mail': user.email,
-      'tipo': 'entrada'
+      'tipo': tipoRegistro
     });
   }
 
@@ -92,17 +117,17 @@ class HomePage extends StatelessWidget {
                 fontSize: 25,
               ),
             ),
-            const Divider(
-              color: Colors.black54,
-            ),
+            const Divider(color: Colors.black54),
             Expanded(
               child: FutureBuilder(
-                future: getLasCheck(),
+                future: getCheck(),
                 builder: ((context, snapshot) {
                   return ListView.builder(
                     itemCount: registros.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+                        leading: Icon(Icons.punch_clock),
+                        trailing: Icon(Icons.more_vert),
                         title: GetRegisters(registers: registros[index]),
                       );
                     },
@@ -116,9 +141,10 @@ class HomePage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          getLastCheck();
           chekIn();
         },
-        icon: Icon(Icons.history),
+        icon: Icon(Icons.app_registration),
         label: Text(
           'REGISTRAR',
           style: TextStyle(

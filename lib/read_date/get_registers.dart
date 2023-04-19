@@ -12,14 +12,15 @@ class GetRegisters extends StatelessWidget {
         FirebaseFirestore.instance.collection('registros');
 
     return FutureBuilder<DocumentSnapshot>(
-        future: reg.doc(registers).get(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> data =
-                snapshot.data!.data() as Map<String, dynamic>;
-            return Text('${data['tipo']}' + ' ' + '${data['horario']}');
-          }
-          return Text('loaging...');
-        });
+      future: reg.doc(registers).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
+          return Text('${data['tipo']}' + ' ' + '${data['horario']}');
+        }
+        return const Text('loaging...');
+      },
+    );
   }
 }
