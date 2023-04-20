@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:relogio_ponto/pages/auth_page.dart';
 import 'package:relogio_ponto/read_date/get_registers.dart';
 
 import '../drawerList.dart';
@@ -39,7 +37,7 @@ class HomePage extends StatelessWidget {
   Future getCheck() async {
     await FirebaseFirestore.instance
         .collection('registros')
-        //.where('id_user', isEqualTo: user.uid)
+        .where('id_user', isEqualTo: user.uid)
         .orderBy('horario', descending: true)
         .get()
         .then(
@@ -55,6 +53,7 @@ class HomePage extends StatelessWidget {
   Future getLastCheck() async {
     await FirebaseFirestore.instance
         .collection('registros')
+        .where('id_user', isEqualTo: user.uid)
         .orderBy('horario', descending: true)
         .limit(1)
         .get()
@@ -66,6 +65,7 @@ class HomePage extends StatelessWidget {
               Map<String, dynamic> data =
                   element.data() as Map<String, dynamic>;
               print('${data['tipo']}');
+              String temp = data['tipo'];
               if (data['tipo'] == 'Entrada') {
                 tipoRegistro = 'Saida';
               } else {
@@ -88,9 +88,10 @@ class HomePage extends StatelessWidget {
     String sDateTimeNow = dateToday.toString();
 
     await FirebaseFirestore.instance.collection('registros').add({
+      'id': 1,
       'horario': sDateTimeNow,
       'id_user': user.uid,
-      'e-mail': user.email,
+      'e_mail': user.email,
       'tipo': tipoRegistro
     });
   }
@@ -98,7 +99,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.grey, actions: [
+      appBar: AppBar(backgroundColor: Colors.deepOrange, actions: [
         IconButton(
           onPressed: signUserOut,
           icon: Icon(Icons.logout),
@@ -126,9 +127,9 @@ class HomePage extends StatelessWidget {
                     itemCount: registros.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: Icon(Icons.punch_clock),
-                        trailing: Icon(Icons.more_vert),
+                        leading: FlutterLogo(),
                         title: GetRegisters(registers: registros[index]),
+                        trailing: Icon(Icons.more),
                       );
                     },
                   );
@@ -167,7 +168,7 @@ class HomePage extends StatelessWidget {
             curve: Curves.ease,
           );
         },
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.deepOrange,
       ),
     );
   }
