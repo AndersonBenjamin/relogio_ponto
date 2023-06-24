@@ -17,7 +17,7 @@ class GetRegisters extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
-          return Text('${data['tipo']}' + ' ' + '${data['horario']}');
+          return Text('${data['horario']}' + ' | ' + '${data['tipo']}');
         }
         return const Text('loaging...');
       },

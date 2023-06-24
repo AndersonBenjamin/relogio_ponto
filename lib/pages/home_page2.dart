@@ -88,11 +88,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Olá Anderson',
+          'Saldo dia',
           style: TextStyle(
             letterSpacing: 2,
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 18,
           ),
         ),
         backgroundColor: Colors.redAccent,
@@ -108,72 +108,109 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Divider(height: 30, color: Colors.black54),
+            const Divider(height: 90, color: Colors.black54),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black45),
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white, //add it here
-                        ),
-                        child: (const Text(
-                          '     Saldo dia \n        04:41  \n\n\n      Intervalo      \n        01:00',
-                          style: TextStyle(
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        )),
-                        margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        height: 150,
-                        //color: Colors.black12,    //must be removed
+                Column(
+                  children: [
+                    Icon(Icons.lock_clock, color: Colors.red),
+                    const Text(
+                      'Saldo dia',
+                      style: TextStyle(
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black45),
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.white, //add it here
-                        ),
-                        child: (const Text(
-                          '  Saldo semana \n        04:41  \n\n\n    Saldo Mes      \n        01:00',
-                          style: TextStyle(
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        )),
-                        margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        height: 150,
-                        //color: Colors.black12,    //must be removed
+                    ),
+                    const Text(
+                      '4:41',
+                      style: TextStyle(
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Icon(Icons.timer, color: Colors.red),
+                    const Text(
+                      'Saldo semana',
+                      style: TextStyle(
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const Text(
+                      '4:41',
+                      style: TextStyle(
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-            const Divider(height: 50, color: Colors.black54),
-            const Text(
-              'Registros: 24/06/2023',
-              style: TextStyle(
-                letterSpacing: 2,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
+            const Divider(height: 90, color: Colors.black54),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    Icon(Icons.lock_clock, color: Colors.red),
+                    const Text(
+                      'Saldo dia',
+                      style: TextStyle(
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const Text(
+                      '4:41',
+                      style: TextStyle(
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Icon(Icons.timer, color: Colors.red),
+                    const Text(
+                      'Saldo mes',
+                      style: TextStyle(
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const Text(
+                      '4:41',
+                      style: TextStyle(
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            const Divider(height: 20, color: Colors.black54),
+            const Divider(height: 90, color: Colors.black54),
             const Text(
-              '    Entrada         |           Saida        ',
+              'Historico',
               style: TextStyle(
-                letterSpacing: 2,
+                letterSpacing: 5,
                 fontWeight: FontWeight.bold,
-                fontSize: 15,
+                fontSize: 25,
               ),
             ),
             const Divider(color: Colors.black54),
