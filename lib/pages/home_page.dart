@@ -11,6 +11,7 @@ class HomePage extends StatelessWidget {
 
   final user = FirebaseAuth.instance.currentUser!;
   String tipoRegistro = 'Entrada';
+  String formattedDifference = '00:19:19';
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
@@ -51,7 +52,7 @@ class HomePage extends StatelessWidget {
         .collection('registros')
         .where('id_user', isEqualTo: user.uid)
         .orderBy('horario', descending: true)
-        .limit(1)
+        .limit(4)
         .get()
         .then(
           (snapshot) => snapshot.docs.forEach(
@@ -81,6 +82,30 @@ class HomePage extends StatelessWidget {
       'e_mail': user.email,
       'tipo': tipoRegistro
     });
+  }
+
+  void formatDate() {
+    DateTime startDateTime = DateTime.parse('2023-01-22 09:00:00');
+    // Starting date and time
+    DateTime endDateTime = DateTime.parse('2023-01-23 18:21:00');
+    // Ending date and time
+    Duration difference = endDateTime.difference(startDateTime);
+
+    formattedDifference = formatDuration(difference);
+    print('Difference: $formattedDifference');
+  }
+
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
+
+    String hours = twoDigits(duration.inHours);
+    String minutes = twoDigits(duration.inMinutes.remainder(60));
+    String seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return "$hours:$minutes:$seconds";
   }
 
   @override
@@ -121,8 +146,8 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.0),
                           color: Colors.white, //add it here
                         ),
-                        child: (const Text(
-                          '     Saldo dia \n        04:41  \n\n\n      Intervalo      \n        01:00',
+                        child: (Text(
+                          '     Saldo dia \n        $formattedDifference  \n\n\n      Intervalo      \n        01:00',
                           style: TextStyle(
                             letterSpacing: 2,
                             fontWeight: FontWeight.bold,
@@ -200,6 +225,8 @@ class HomePage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          formatDate();
+          formatDate();
           getLastCheck();
           chekIn();
         },
