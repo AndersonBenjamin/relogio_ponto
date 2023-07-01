@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:relogio_ponto/read_date/get_registers.dart';
 import 'package:intl/intl.dart';
-
+import 'package:provider/provider.dart';
 import '../drawerList.dart';
 
 class HomePage extends StatelessWidget {
@@ -33,22 +33,6 @@ class HomePage extends StatelessWidget {
   List<String> LastCheck = [];
 
   Future getCheck() async {
-    DateTime dt1 = DateTime.parse("2023-06-27 09:00:00");
-    DateTime dt2 = DateTime.parse("2023-06-27 09:00:00");
-
-    Duration diff = dt1.difference(dt2);
-
-    print(diff.inDays);
-//output (in days): 1198
-
-    print(diff.inHours);
-//output (in hours): 28752
-
-    print(diff.inMinutes);
-//output (in minutes): 1725170
-
-    print(diff.inSeconds);
-//output (in seconds): 103510200
     await FirebaseFirestore.instance
         .collection('registros')
         .where('id_user', isEqualTo: user.uid)
@@ -58,18 +42,13 @@ class HomePage extends StatelessWidget {
         .then(
           (snapshot) => snapshot.docs.forEach(
             (element) {
-              print(element.reference);
               registros.add(element.reference.id);
-
               Map<String, dynamic> data =
                   element.data() as Map<String, dynamic>;
-              print('${data['tipo']}');
               String temp = data['tipo'];
-              if (temp == 'Entrada') {
-                registrosSaida.add(element.reference.id);
-              } else {
-                registrosEntrada.add(element.reference.id);
-              }
+              temp == 'Entrada'
+                  ? registrosSaida.add(element.reference.id)
+                  : registrosEntrada.add(element.reference.id);
             },
           ),
         );
@@ -80,7 +59,7 @@ class HomePage extends StatelessWidget {
         .collection('registros')
         .where('id_user', isEqualTo: user.uid)
         .orderBy('horario', descending: true)
-        .limit(4)
+        .limit(1)
         .get()
         .then(
           (snapshot) => snapshot.docs.forEach(
@@ -89,12 +68,7 @@ class HomePage extends StatelessWidget {
               LastCheck.add(element.reference.id);
               Map<String, dynamic> data =
                   element.data() as Map<String, dynamic>;
-              print('${data['tipo']}');
-
-              String temp = data['tipo'];
-
               DateTime PrimeiroRegistro = DateTime.parse(data['horario']);
-
               tipoRegistro = (data['tipo'] == 'Entrada') ? 'Saida' : 'Entrada';
             },
           ),
@@ -114,12 +88,11 @@ class HomePage extends StatelessWidget {
 
   void formatDate() {
     DateTime startDateTime = DateTime.parse('2023-01-22 09:00:00');
-    // Starting date and time
     DateTime endDateTime = DateTime.parse('2023-01-23 18:21:00');
-    // Ending date and time
-    Duration difference = endDateTime.difference(startDateTime);
 
+    Duration difference = endDateTime.difference(startDateTime);
     formattedDifference = formatDuration(difference);
+
     print('Difference: $formattedDifference');
   }
 
@@ -175,7 +148,7 @@ class HomePage extends StatelessWidget {
                           color: Colors.white, //add it here
                         ),
                         child: (Text(
-                          '     Saldo dia \n        $formattedDifference  \n\n\n      Intervalo      \n        01:00',
+                          '\n     Saldo dia  \n     $formattedDifference  \n\n      Intervalo      \n        01:00',
                           style: TextStyle(
                             letterSpacing: 2,
                             fontWeight: FontWeight.bold,
@@ -194,7 +167,7 @@ class HomePage extends StatelessWidget {
                           color: Colors.white, //add it here
                         ),
                         child: (const Text(
-                          '  Saldo semana \n        04:41  \n\n\n    Saldo Mes      \n        01:00',
+                          '\n  Saldo semana \n        04:41  \n\n    Saldo Mes      \n        01:00',
                           style: TextStyle(
                             letterSpacing: 2,
                             fontWeight: FontWeight.bold,
