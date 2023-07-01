@@ -27,20 +27,48 @@ class HomePage extends StatelessWidget {
   late PageController pc;
 
   List<String> registros = [];
+  List<String> registrosEntrada = [];
+  List<String> registrosSaida = [];
   List<String> LastCheck = [];
 
   Future getCheck() async {
+    DateTime dt1 = DateTime.parse("2023-06-27 09:00:00");
+    DateTime dt2 = DateTime.parse("2023-06-27 09:00:00");
+
+    Duration diff = dt1.difference(dt2);
+
+    print(diff.inDays);
+//output (in days): 1198
+
+    print(diff.inHours);
+//output (in hours): 28752
+
+    print(diff.inMinutes);
+//output (in minutes): 1725170
+
+    print(diff.inSeconds);
+//output (in seconds): 103510200
     await FirebaseFirestore.instance
         .collection('registros')
         .where('id_user', isEqualTo: user.uid)
         .orderBy('horario', descending: true)
-        .limit(1)
+        .limit(10)
         .get()
         .then(
           (snapshot) => snapshot.docs.forEach(
             (element) {
               print(element.reference);
               registros.add(element.reference.id);
+
+              Map<String, dynamic> data =
+                  element.data() as Map<String, dynamic>;
+              print('${data['tipo']}');
+              String temp = data['tipo'];
+              if (temp == 'Entrada') {
+                registrosSaida.add(element.reference.id);
+              } else {
+                registrosEntrada.add(element.reference.id);
+              }
             },
           ),
         );
@@ -61,12 +89,12 @@ class HomePage extends StatelessWidget {
               Map<String, dynamic> data =
                   element.data() as Map<String, dynamic>;
               print('${data['tipo']}');
+
               String temp = data['tipo'];
-              if (data['tipo'] == 'Entrada') {
-                tipoRegistro = 'Saida';
-              } else {
-                tipoRegistro = 'Entrada';
-              }
+
+              DateTime PrimeiroRegistro = DateTime.parse(data['horario']);
+
+              tipoRegistro = (data['tipo'] == 'Entrada') ? 'Saida' : 'Entrada';
             },
           ),
         );
@@ -185,9 +213,7 @@ class HomePage extends StatelessWidget {
                     itemCount: registros.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: FlutterLogo(),
-                        title: GetRegisters(registers: registros[index]),
-                        trailing: Icon(Icons.more),
+                        title: GetRegistersIn(registers: registros[index]),
                       );
                     },
                   );

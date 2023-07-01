@@ -24,3 +24,28 @@ class GetRegisters extends StatelessWidget {
     );
   }
 }
+
+class GetRegistersIn extends StatelessWidget {
+  final String registers;
+
+  GetRegistersIn({required this.registers});
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference reg =
+        FirebaseFirestore.instance.collection('registros');
+
+    return FutureBuilder<DocumentSnapshot>(
+      future: reg.doc(registers).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
+          return Text('${data['horario']}');
+        }
+
+        return const Text('loaging...');
+      },
+    );
+  }
+}
