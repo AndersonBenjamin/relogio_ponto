@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class GetRegisters extends StatelessWidget {
   final String registers;
@@ -47,5 +48,13 @@ class GetRegistersIn extends StatelessWidget {
         return const Text('loaging...');
       },
     );
+  }
+}
+
+class getFormattedDateTimeNow {
+  static String getCurrentDateTime() {
+    final now = DateTime.now();
+    final formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return formatter.format(now);
   }
 }

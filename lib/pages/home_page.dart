@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:relogio_ponto/read_date/get_registers.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:relogio_ponto/db/get_registers.dart';
+import 'package:relogio_ponto/models/register.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import '../drawerList.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,18 +13,9 @@ class HomePage extends StatelessWidget {
 
   final user = FirebaseAuth.instance.currentUser!;
   String tipoRegistro = 'Entrada';
-  String formattedDifference = '00:19:19';
+  String formattedDifference = '00:19:20';
 
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
-  }
-
-  String getFormattedDateTimeNow() {
-    DateTime now = DateTime.now();
-    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
-    String formatted = formatter.format(now);
-    return formatted;
-  }
+  DateTime nowGlobal = DateTime.parse('2023-01-22 09:00:00');
 
   int paginaAtual = 1;
   late PageController pc;
@@ -32,81 +25,8 @@ class HomePage extends StatelessWidget {
   List<String> registrosSaida = [];
   List<String> LastCheck = [];
 
-  Future getCheck() async {
-    await FirebaseFirestore.instance
-        .collection('registros')
-        .where('id_user', isEqualTo: user.uid)
-        .orderBy('horario', descending: true)
-        .limit(10)
-        .get()
-        .then(
-          (snapshot) => snapshot.docs.forEach(
-            (element) {
-              registros.add(element.reference.id);
-              Map<String, dynamic> data =
-                  element.data() as Map<String, dynamic>;
-              String temp = data['tipo'];
-              temp == 'Entrada'
-                  ? registrosSaida.add(element.reference.id)
-                  : registrosEntrada.add(element.reference.id);
-            },
-          ),
-        );
-  }
-
-  Future getLastCheck() async {
-    await FirebaseFirestore.instance
-        .collection('registros')
-        .where('id_user', isEqualTo: user.uid)
-        .orderBy('horario', descending: true)
-        .limit(1)
-        .get()
-        .then(
-          (snapshot) => snapshot.docs.forEach(
-            (element) {
-              print(element.reference);
-              LastCheck.add(element.reference.id);
-              Map<String, dynamic> data =
-                  element.data() as Map<String, dynamic>;
-              DateTime PrimeiroRegistro = DateTime.parse(data['horario']);
-              tipoRegistro = (data['tipo'] == 'Entrada') ? 'Saida' : 'Entrada';
-            },
-          ),
-        );
-  }
-
-  Future<dynamic> chekIn() async {
-    String sDateTimeNow = getFormattedDateTimeNow();
-    await FirebaseFirestore.instance.collection('registros').add({
-      'id': 1,
-      'horario': sDateTimeNow,
-      'id_user': user.uid,
-      'e_mail': user.email,
-      'tipo': tipoRegistro
-    });
-  }
-
-  void formatDate() {
-    DateTime startDateTime = DateTime.parse('2023-01-22 09:00:00');
-    DateTime endDateTime = DateTime.parse('2023-01-23 18:21:00');
-
-    Duration difference = endDateTime.difference(startDateTime);
-    formattedDifference = formatDuration(difference);
-
-    print('Difference: $formattedDifference');
-  }
-
-  String formatDuration(Duration duration) {
-    String twoDigits(int n) {
-      if (n >= 10) return "$n";
-      return "0$n";
-    }
-
-    String hours = twoDigits(duration.inHours);
-    String minutes = twoDigits(duration.inMinutes.remainder(60));
-    String seconds = twoDigits(duration.inSeconds.remainder(60));
-
-    return "$hours:$minutes:$seconds";
+  void signUserOut() {
+    FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -147,14 +67,33 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.0),
                           color: Colors.white, //add it here
                         ),
-                        child: (Text(
-                          '\n     Saldo dia  \n     $formattedDifference  \n\n      Intervalo      \n        01:00',
-                          style: TextStyle(
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        )),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            (Text(
+                              '  Saldo Mes  \n   $formattedDifference \n\n',
+                              style: TextStyle(
+                                letterSpacing: 2,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            )),
+                            (Text(
+                              'Intervalo 00:50:25',
+                              style: TextStyle(
+                                letterSpacing: 2,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            )),
+                            LinearPercentIndicator(
+                              lineHeight: 13,
+                              percent: 0.80,
+                              progressColor: Colors.green,
+                              backgroundColor: Colors.green.shade100,
+                            ),
+                          ],
+                        ),
                         margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
                         width: MediaQuery.of(context).size.width * 0.45,
                         height: 150,
@@ -166,14 +105,22 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.0),
                           color: Colors.white, //add it here
                         ),
-                        child: (const Text(
-                          '\n  Saldo semana \n        04:41  \n\n    Saldo Mes      \n        01:00',
-                          style: TextStyle(
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        )),
+
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CircularPercentIndicator(
+                              radius: 130,
+                              lineWidth: 10,
+                              percent: 0.8,
+                              progressColor: Colors.red,
+                              backgroundColor: Colors.red.shade100,
+                              circularStrokeCap: CircularStrokeCap.round,
+                              center: Text('Saldo dia \n   06:41'),
+                            )
+                          ],
+                        ),
+
                         margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
                         width: MediaQuery.of(context).size.width * 0.45,
                         height: 150,
@@ -255,5 +202,91 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.redAccent,
       ),
     );
+  }
+
+  String formatDate() {
+    DateTime startDateTime = DateTime.parse('2023-01-22 09:00:00');
+    DateTime endDateTime = DateTime.parse('2023-01-23 18:21:00');
+
+    Duration difference = endDateTime.difference(startDateTime);
+    formattedDifference = formatDuration(difference);
+
+    print('Difference: $formattedDifference');
+    return formattedDifference;
+  }
+
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
+
+    String hours = twoDigits(duration.inHours);
+    String minutes = twoDigits(duration.inMinutes.remainder(60));
+    String seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return "$hours:$minutes:$seconds";
+  }
+
+  String getFormattedDateTimeNow() {
+    DateTime now = DateTime.now();
+    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    String formatted = formatter.format(now);
+    return formatted;
+  }
+
+  Future getCheck() async {
+    DateTime now = DateTime.now();
+    await FirebaseFirestore.instance
+        .collection('registros')
+        .where('id_user', isEqualTo: user.uid)
+        .orderBy('horario', descending: true)
+        .limit(4)
+        .get()
+        .then(
+          (snapshot) => snapshot.docs.forEach(
+            (element) {
+              registros.add(element.reference.id);
+              Map<String, dynamic> data =
+                  element.data() as Map<String, dynamic>;
+              String temp = data['tipo'];
+              temp == 'Entrada'
+                  ? registrosSaida.add(element.reference.id)
+                  : registrosEntrada.add(element.reference.id);
+            },
+          ),
+        );
+  }
+
+  Future getLastCheck() async {
+    await FirebaseFirestore.instance
+        .collection('registros')
+        .where('id_user', isEqualTo: user.uid)
+        .orderBy('horario', descending: true)
+        .limit(1)
+        .get()
+        .then(
+          (snapshot) => snapshot.docs.forEach(
+            (element) {
+              print(element.reference);
+              LastCheck.add(element.reference.id);
+              Map<String, dynamic> data =
+                  element.data() as Map<String, dynamic>;
+              DateTime PrimeiroRegistro = DateTime.parse(data['horario']);
+              tipoRegistro = (data['tipo'] == 'Entrada') ? 'Saida' : 'Entrada';
+            },
+          ),
+        );
+  }
+
+  Future<dynamic> chekIn() async {
+    String sDateTimeNow = getFormattedDateTimeNow();
+    await FirebaseFirestore.instance.collection('registros').add({
+      'id': 1,
+      'horario': sDateTimeNow,
+      'id_user': user.uid,
+      'e_mail': user.email,
+      'tipo': tipoRegistro
+    });
   }
 }
