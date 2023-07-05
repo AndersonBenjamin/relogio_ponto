@@ -12,6 +12,9 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final user = FirebaseAuth.instance.currentUser!;
+
+  DataBase db = DataBase();
+
   String tipoRegistro = 'Entrada';
   String formattedDifference = '00:19:20';
 
@@ -23,7 +26,6 @@ class HomePage extends StatelessWidget {
   List<String> registros = [];
   List<String> registrosEntrada = [];
   List<String> registrosSaida = [];
-  List<String> LastCheck = [];
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
@@ -173,8 +175,8 @@ class HomePage extends StatelessWidget {
         onPressed: () {
           formatDate();
           formatDate();
-          getLastCheck();
-          chekIn();
+          db.getLastCheck(user.uid.toString());
+          db.chekIn(1, user.uid.toString(), user.email.toString(), 'Entrada');
         },
         icon: Icon(Icons.app_registration),
         label: Text(
@@ -257,19 +259,37 @@ class HomePage extends StatelessWidget {
           ),
         );
   }
+}
 
-  Future getLastCheck() async {
+class DataBase {
+  Future<dynamic> chekIn(
+      int id, String userId, String email, String tipo) async {
+    String sDateTimeNow =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    await FirebaseFirestore.instance.collection('registros').add({
+      'id': id,
+      'horario': sDateTimeNow,
+      'id_user': userId,
+      'e_mail': email,
+      'tipo': tipo
+    });
+  }
+
+  Future<String> getLastCheck(String userId) async {
+    List<String> LastCheck = [];
+    String tipoRegistro = '';
+
     await FirebaseFirestore.instance
         .collection('registros')
-        .where('id_user', isEqualTo: user.uid)
+        .where('id_user', isEqualTo: userId)
         .orderBy('horario', descending: true)
         .limit(1)
         .get()
         .then(
           (snapshot) => snapshot.docs.forEach(
             (element) {
-              print(element.reference);
               LastCheck.add(element.reference.id);
+
               Map<String, dynamic> data =
                   element.data() as Map<String, dynamic>;
               DateTime PrimeiroRegistro = DateTime.parse(data['horario']);
@@ -277,16 +297,7 @@ class HomePage extends StatelessWidget {
             },
           ),
         );
-  }
 
-  Future<dynamic> chekIn() async {
-    String sDateTimeNow = getFormattedDateTimeNow();
-    await FirebaseFirestore.instance.collection('registros').add({
-      'id': 1,
-      'horario': sDateTimeNow,
-      'id_user': user.uid,
-      'e_mail': user.email,
-      'tipo': tipoRegistro
-    });
+    return tipoRegistro; // Add the return statement here
   }
 }
