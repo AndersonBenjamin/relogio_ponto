@@ -154,7 +154,7 @@ class HomePage extends StatelessWidget {
             const Divider(color: Colors.black54),
             Expanded(
               child: FutureBuilder(
-                future: getCheck(),
+                future: db.getCheck(user.uid.toString()),
                 builder: ((context, snapshot) {
                   return ListView.builder(
                     itemCount: registros.length,
@@ -236,29 +236,6 @@ class HomePage extends StatelessWidget {
     String formatted = formatter.format(now);
     return formatted;
   }
-
-  Future getCheck() async {
-    DateTime now = DateTime.now();
-    await FirebaseFirestore.instance
-        .collection('registros')
-        .where('id_user', isEqualTo: user.uid)
-        .orderBy('horario', descending: true)
-        .limit(4)
-        .get()
-        .then(
-          (snapshot) => snapshot.docs.forEach(
-            (element) {
-              registros.add(element.reference.id);
-              Map<String, dynamic> data =
-                  element.data() as Map<String, dynamic>;
-              String temp = data['tipo'];
-              temp == 'Entrada'
-                  ? registrosSaida.add(element.reference.id)
-                  : registrosEntrada.add(element.reference.id);
-            },
-          ),
-        );
-  }
 }
 
 class DataBase {
@@ -299,5 +276,32 @@ class DataBase {
         );
 
     return tipoRegistro; // Add the return statement here
+  }
+
+  Future<List<String>> getCheck(String userId) async {
+    List<String> registros = [];
+    List<String> registrosEntrada = [];
+    List<String> registrosSaida = [];
+    DateTime now = DateTime.now();
+    await FirebaseFirestore.instance
+        .collection('registros')
+        .where('id_user', isEqualTo: userId)
+        .orderBy('horario', descending: true)
+        .limit(4)
+        .get()
+        .then(
+          (snapshot) => snapshot.docs.forEach(
+            (element) {
+              registros.add(element.reference.id);
+              Map<String, dynamic> data =
+                  element.data() as Map<String, dynamic>;
+              String temp = data['tipo'];
+              temp == 'Entrada'
+                  ? registrosSaida.add(element.reference.id)
+                  : registrosEntrada.add(element.reference.id);
+            },
+          ),
+        );
+    return registros;
   }
 }
