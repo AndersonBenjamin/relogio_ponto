@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:relogio_ponto/db/get_registers.dart';
 import 'package:relogio_ponto/models/register.dart';
 import 'package:intl/intl.dart';
@@ -15,10 +18,9 @@ class HomePage extends StatelessWidget {
 
   DataBase db = DataBase();
 
-  String tipoRegistro = 'Entrada';
-  String formattedDifference = '00:19:20';
+  RegisterProvider registerInstance = RegisterProvider();
 
-  DateTime nowGlobal = DateTime.parse('2023-01-22 09:00:00');
+  String tipoRegistro = 'Entrada';
 
   int paginaAtual = 1;
   late PageController pc;
@@ -69,18 +71,21 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.0),
                           color: Colors.white, //add it here
                         ),
+                        margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: 150,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            (Text(
-                              '  Saldo Mes  \n   $formattedDifference \n\n',
+                            (const Text(
+                              '  Saldo Mes  \n   00:19:20 \n\n\n',
                               style: TextStyle(
                                 letterSpacing: 2,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                               ),
                             )),
-                            (Text(
+                            (const Text(
                               'Intervalo 00:50:25',
                               style: TextStyle(
                                 letterSpacing: 2,
@@ -96,9 +101,6 @@ class HomePage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        height: 150,
                         //color: Colors.black12,    //must be removed
                       ),
                       Container(
@@ -107,6 +109,10 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.0),
                           color: Colors.white, //add it here
                         ),
+
+                        margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: 150,
 
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -122,10 +128,6 @@ class HomePage extends StatelessWidget {
                             )
                           ],
                         ),
-
-                        margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        height: 150,
                         //color: Colors.black12,    //must be removed
                       ),
                     ],
@@ -157,10 +159,16 @@ class HomePage extends StatelessWidget {
                 future: db.getCheck(user.uid.toString()),
                 builder: ((context, snapshot) {
                   return ListView.builder(
-                    itemCount: registros.length,
+                    itemCount: Provider.of<RegisterProvider>(context)
+                        .registerGet
+                        .length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: GetRegistersIn(registers: registros[index]),
+                        title: Text(Provider.of<RegisterProvider>(context)
+                            .registerGet[index]
+                            .horario),
+                        //title: GetRegistersIn(registers: registros[index]),
+                        //Provider.of<MyObjectProvider>(context);
                       );
                     },
                   );
@@ -173,13 +181,11 @@ class HomePage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          formatDate();
-          formatDate();
           db.getLastCheck(user.uid.toString());
           db.chekIn(1, user.uid.toString(), user.email.toString(), 'Entrada');
         },
         icon: Icon(Icons.app_registration),
-        label: Text(
+        label: const Text(
           'REGISTRAR',
           style: TextStyle(
             letterSpacing: 0,
@@ -189,7 +195,7 @@ class HomePage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: paginaAtual,
-        items: [
+        items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.history), label: 'Historico'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Ajustes'),
@@ -204,37 +210,6 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.redAccent,
       ),
     );
-  }
-
-  String formatDate() {
-    DateTime startDateTime = DateTime.parse('2023-01-22 09:00:00');
-    DateTime endDateTime = DateTime.parse('2023-01-23 18:21:00');
-
-    Duration difference = endDateTime.difference(startDateTime);
-    formattedDifference = formatDuration(difference);
-
-    print('Difference: $formattedDifference');
-    return formattedDifference;
-  }
-
-  String formatDuration(Duration duration) {
-    String twoDigits(int n) {
-      if (n >= 10) return "$n";
-      return "0$n";
-    }
-
-    String hours = twoDigits(duration.inHours);
-    String minutes = twoDigits(duration.inMinutes.remainder(60));
-    String seconds = twoDigits(duration.inSeconds.remainder(60));
-
-    return "$hours:$minutes:$seconds";
-  }
-
-  String getFormattedDateTimeNow() {
-    DateTime now = DateTime.now();
-    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
-    String formatted = formatter.format(now);
-    return formatted;
   }
 }
 
@@ -283,6 +258,9 @@ class DataBase {
     List<String> registrosEntrada = [];
     List<String> registrosSaida = [];
     DateTime now = DateTime.now();
+
+    RegisterProvider().resetRegister();
+
     await FirebaseFirestore.instance
         .collection('registros')
         .where('id_user', isEqualTo: userId)
@@ -290,17 +268,22 @@ class DataBase {
         .limit(4)
         .get()
         .then(
-          (snapshot) => snapshot.docs.forEach(
-            (element) {
-              registros.add(element.reference.id);
-              Map<String, dynamic> data =
-                  element.data() as Map<String, dynamic>;
-              String temp = data['tipo'];
-              temp == 'Entrada'
-                  ? registrosSaida.add(element.reference.id)
-                  : registrosEntrada.add(element.reference.id);
-            },
-          ),
+          (snapshot) => snapshot.docs.forEach((element) {
+            registros.add(element.reference.id);
+            Map<String, dynamic> data = element.data() as Map<String, dynamic>;
+
+            String tipo = data['tipo'];
+            String email = data['e_mail'];
+            String userId = data['id_user'];
+            String horario = data['horario'];
+
+            Register regs = new Register(
+                horario: horario, userId: userId, email: email, tipo: tipo);
+
+            //regTemp(horario: horario, userId: userId, email: email, tipo: tipo);
+
+            RegisterProvider().updateRegister(regs);
+          }),
         );
     return registros;
   }
