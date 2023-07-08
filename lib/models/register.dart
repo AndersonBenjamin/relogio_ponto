@@ -18,9 +18,7 @@ class Register {
 List<Register> _reg = [];
 
 class RegisterProvider with ChangeNotifier {
-  //List<Register> _reg = [];
-
-  List<Register> get registerGet => _reg; //Get
+  List<Register> get registerGet => _reg;
 
   void updateRegister(Register reg) {
     _reg.add(reg);

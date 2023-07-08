@@ -15,7 +15,7 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => RegisterProvider(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
