@@ -7,7 +7,6 @@ import 'package:relogio_ponto/db/registers_db.dart';
 import 'package:relogio_ponto/models/register.dart';
 import '../const/constants.dart';
 import '../drawerList.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -22,6 +21,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    future:
+    db.getCheck(user.uid.toString());
     return Scaffold(
       appBar: myAppBar,
       drawer: NavigationDrawer(),
@@ -125,6 +126,130 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const Divider(color: Colors.black54),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black45),
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.white, //add it here
+                        ),
+                        margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: 150,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            /* Expanded(
+                              child: FutureBuilder(
+                                future: db.getCheck(user.uid.toString()),
+                                builder: ((context, snapshot) {
+                                  return ListView.builder(
+                                    itemCount:
+                                        Provider.of<RegisterProvider>(context)
+                                            .registerGet
+                                            .length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        title: Text(
+                                            Provider.of<RegisterProvider>(
+                                                    context)
+                                                .registerGet[index]
+                                                .horario),
+                                      );
+                                    },
+                                  );
+                                }),
+                              ),
+                            ), */
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount:
+                                    Provider.of<RegisterProvider>(context)
+                                        .registerGet
+                                        .length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text(
+                                        Provider.of<RegisterProvider>(context)
+                                            .registerGet[index]
+                                            .horario),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        //color: Colors.black12,    //must be removed
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black45),
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.white, //add it here
+                        ),
+
+                        margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: 150,
+
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: FutureBuilder(
+                                future: db.getCheck(user.uid.toString()),
+                                builder: ((context, snapshot) {
+                                  return ListView.builder(
+                                    itemCount:
+                                        Provider.of<RegisterProvider>(context)
+                                            .registerGetOut
+                                            .length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        title: Text(
+                                            Provider.of<RegisterProvider>(
+                                                    context)
+                                                .registerGetOut[index]
+                                                .horario),
+                                      );
+                                    },
+                                  );
+                                }),
+                              ),
+                            ),
+                          ],
+                        ),
+                        //color: Colors.black12,    //must be removed
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            /*Expanded(
+              child: FutureBuilder(
+                future: db.getCheck(user.uid.toString()),
+                builder: ((context, snapshot) {
+                  return ListView.builder(
+                    itemCount: Provider.of<RegisterProvider>(context)
+                        .registerGetIn
+                        .length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(Provider.of<RegisterProvider>(context)
+                            .registerGet[index]
+                            .horario),
+                      );
+                    },
+                  );
+                }),
+              ),
+            ),
             Expanded(
               child: FutureBuilder(
                 future: db.getCheck(user.uid.toString()),
@@ -143,7 +268,7 @@ class HomePage extends StatelessWidget {
                   );
                 }),
               ),
-            ),
+            ), */
           ],
         ),
       ),

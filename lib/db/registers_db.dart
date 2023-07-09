@@ -19,13 +19,15 @@ class DataBase {
   }
 
   Future getCheck(String userId) async {
+    String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
     RegisterProvider().resetRegister();
 
     await FirebaseFirestore.instance
         .collection('registros')
+        .where('horario', isGreaterThan: today)
         .where('id_user', isEqualTo: userId)
-        .orderBy('horario', descending: true)
-        .limit(10)
+        .orderBy('horario', descending: false)
+        .limit(2)
         .get()
         .then(
           (snapshot) => snapshot.docs.forEach(
@@ -33,7 +35,7 @@ class DataBase {
               Map<String, dynamic> data =
                   element.data() as Map<String, dynamic>;
               Register regs = Register(
-                horario: data['horario'].toString(),
+                horario: data['horario'].toString().substring(11),
                 userId: data['id_user'].toString(),
                 email: data['e_mail'].toString(),
                 tipo: data['tipo'].toString(),
@@ -42,5 +44,6 @@ class DataBase {
             },
           ),
         );
+    RegisterProvider().updateRegisterInOrOut();
   }
 }
