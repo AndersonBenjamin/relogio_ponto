@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'models/register.dart';
 
 void main() async {
+  int testeInicio = 123;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

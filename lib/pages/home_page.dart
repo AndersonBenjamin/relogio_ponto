@@ -19,10 +19,20 @@ class HomePage extends StatelessWidget {
   int paginaAtual = 1;
   late PageController pc;
 
+  late RegisterProvider regist;
+
+  Register regiTeste = new Register(
+      horario: '231', userId: '31ed', email: 'rwerw', tipo: 'wqeq');
+
   @override
   Widget build(BuildContext context) {
-    future:
     db.getCheck(user.uid.toString());
+
+    regist = Provider.of<RegisterProvider>(context);
+
+    Provider.of<RegisterProvider>(context, listen: false)
+        .updateRegister(regiTeste);
+
     return Scaffold(
       appBar: myAppBar,
       drawer: NavigationDrawer(),
@@ -125,7 +135,17 @@ class HomePage extends StatelessWidget {
                 fontSize: 15,
               ),
             ),
+            Text(
+              Provider.of<RegisterProvider>(context).registerGet[1].email,
+              style: TextStyle(
+                letterSpacing: 2,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
             const Divider(color: Colors.black54),
+
+            /*
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -142,48 +162,22 @@ class HomePage extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.45,
                         height: 150,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            /* Expanded(
-                              child: FutureBuilder(
-                                future: db.getCheck(user.uid.toString()),
-                                builder: ((context, snapshot) {
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(child: Consumer<RegisterProvider>(
+                                builder: ((context, regist, child) {
                                   return ListView.builder(
-                                    itemCount:
-                                        Provider.of<RegisterProvider>(context)
-                                            .registerGet
-                                            .length,
+                                    itemCount: regist.registerGet.length,
                                     itemBuilder: (context, index) {
                                       return ListTile(
                                         title: Text(
-                                            Provider.of<RegisterProvider>(
-                                                    context)
-                                                .registerGet[index]
-                                                .horario),
+                                            regist.registerGet[index].horario),
                                       );
                                     },
                                   );
                                 }),
-                              ),
-                            ), */
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount:
-                                    Provider.of<RegisterProvider>(context)
-                                        .registerGet
-                                        .length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text(
-                                        Provider.of<RegisterProvider>(context)
-                                            .registerGet[index]
-                                            .horario),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+                              ))
+                            ]),
                         //color: Colors.black12,    //must be removed
                       ),
                       Container(
@@ -205,17 +199,11 @@ class HomePage extends StatelessWidget {
                                 future: db.getCheck(user.uid.toString()),
                                 builder: ((context, snapshot) {
                                   return ListView.builder(
-                                    itemCount:
-                                        Provider.of<RegisterProvider>(context)
-                                            .registerGetOut
-                                            .length,
+                                    itemCount: regist.registerGet.length,
                                     itemBuilder: (context, index) {
                                       return ListTile(
-                                        title: Text(
-                                            Provider.of<RegisterProvider>(
-                                                    context)
-                                                .registerGetOut[index]
-                                                .horario),
+                                        title:
+                                            Text(regist.registerGet[0].horario),
                                       );
                                     },
                                   );
@@ -231,44 +219,7 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            /*Expanded(
-              child: FutureBuilder(
-                future: db.getCheck(user.uid.toString()),
-                builder: ((context, snapshot) {
-                  return ListView.builder(
-                    itemCount: Provider.of<RegisterProvider>(context)
-                        .registerGetIn
-                        .length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(Provider.of<RegisterProvider>(context)
-                            .registerGet[index]
-                            .horario),
-                      );
-                    },
-                  );
-                }),
-              ),
-            ),
-            Expanded(
-              child: FutureBuilder(
-                future: db.getCheck(user.uid.toString()),
-                builder: ((context, snapshot) {
-                  return ListView.builder(
-                    itemCount: Provider.of<RegisterProvider>(context)
-                        .registerGet
-                        .length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(Provider.of<RegisterProvider>(context)
-                            .registerGet[index]
-                            .horario),
-                      );
-                    },
-                  );
-                }),
-              ),
-            ), */
+            */
           ],
         ),
       ),
