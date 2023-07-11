@@ -42,6 +42,7 @@ class DataBase {
                   element.data() as Map<String, dynamic>;
               Register regs = Register(
                 horario: data['horario'].toString().substring(11),
+                fullDate: data['horario'].toString(),
                 userId: data['id_user'].toString(),
                 email: data['e_mail'].toString(),
                 tipo: data['tipo'].toString(),

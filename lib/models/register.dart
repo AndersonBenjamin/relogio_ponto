@@ -6,13 +6,14 @@ class Register {
   String userId;
   String email;
   String tipo;
+  String fullDate;
 
-  Register({
-    required this.horario,
-    required this.userId,
-    required this.email,
-    required this.tipo,
-  });
+  Register(
+      {required this.horario,
+      required this.userId,
+      required this.email,
+      required this.tipo,
+      required this.fullDate});
 }
 
 class RegisterProvider extends ChangeNotifier {

@@ -18,12 +18,6 @@ class HomePage extends StatelessWidget {
 
   late RegisterProvider instanceRegisterProvider = new RegisterProvider();
 
-  Register regiTeste = new Register(
-      horario: '09:00:00',
-      userId: '12345',
-      email: 'anderson.targino@teste.com',
-      tipo: 'Entrada');
-
   @override
   Widget build(BuildContext context) {
     db.getCheck(user.uid.toString(), context);
@@ -207,6 +201,7 @@ class HomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           db.chekIn(1, user.uid.toString(), user.email.toString(), 'Entrada');
+          db.getCheck(user.uid.toString(), context);
         },
         backgroundColor: Colors.redAccent,
         icon: Icon(Icons.app_registration),
