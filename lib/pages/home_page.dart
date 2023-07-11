@@ -14,24 +14,19 @@ class HomePage extends StatelessWidget {
   final user = FirebaseAuth.instance.currentUser!;
   DataBase db = DataBase();
 
-  String tipoRegistro = 'Entrada';
+  List<Register> _register = [];
 
-  int paginaAtual = 1;
-  late PageController pc;
-
-  late RegisterProvider regist;
+  late RegisterProvider instanceRegisterProvider = new RegisterProvider();
 
   Register regiTeste = new Register(
-      horario: '231', userId: '31ed', email: 'rwerw', tipo: 'wqeq');
+      horario: '09:00:00',
+      userId: '12345',
+      email: 'anderson.targino@teste.com',
+      tipo: 'Entrada');
 
   @override
   Widget build(BuildContext context) {
-    db.getCheck(user.uid.toString());
-
-    regist = Provider.of<RegisterProvider>(context);
-
-    Provider.of<RegisterProvider>(context, listen: false)
-        .updateRegister(regiTeste);
+    db.getCheck(user.uid.toString(), context);
 
     return Scaffold(
       appBar: myAppBar,
@@ -135,17 +130,7 @@ class HomePage extends StatelessWidget {
                 fontSize: 15,
               ),
             ),
-            Text(
-              Provider.of<RegisterProvider>(context).registerGet[1].email,
-              style: TextStyle(
-                letterSpacing: 2,
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
             const Divider(color: Colors.black54),
-
-            /*
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -165,13 +150,13 @@ class HomePage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Expanded(child: Consumer<RegisterProvider>(
-                                builder: ((context, regist, child) {
+                                builder: ((context, registers, child) {
                                   return ListView.builder(
-                                    itemCount: regist.registerGet.length,
+                                    itemCount: registers.registerGetIn.length,
                                     itemBuilder: (context, index) {
                                       return ListTile(
-                                        title: Text(
-                                            regist.registerGet[index].horario),
+                                        title: Text(registers
+                                            .registerGetIn[index].horario),
                                       );
                                     },
                                   );
@@ -192,26 +177,22 @@ class HomePage extends StatelessWidget {
                         height: 150,
 
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: FutureBuilder(
-                                future: db.getCheck(user.uid.toString()),
-                                builder: ((context, snapshot) {
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(child: Consumer<RegisterProvider>(
+                                builder: ((context, registers, child) {
                                   return ListView.builder(
-                                    itemCount: regist.registerGet.length,
+                                    itemCount: registers.registerGetOut.length,
                                     itemBuilder: (context, index) {
                                       return ListTile(
-                                        title:
-                                            Text(regist.registerGet[0].horario),
+                                        title: Text(registers
+                                            .registerGetOut[index].horario),
                                       );
                                     },
                                   );
                                 }),
-                              ),
-                            ),
-                          ],
-                        ),
+                              ))
+                            ]),
                         //color: Colors.black12,    //must be removed
                       ),
                     ],
@@ -219,7 +200,6 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            */
           ],
         ),
       ),

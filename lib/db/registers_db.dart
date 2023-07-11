@@ -19,41 +19,39 @@ class DataBase {
     });
   }
 
-  Future getCheck(String userId) async {
-    build(BuildContext context) async {
-      String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  Future getCheck(String userId, BuildContext context) async {
+    // Add the 'BuildContext' parameter
+    Provider.of<RegisterProvider>(context, listen: false).resetRegister();
+    String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-      RegisterProvider().resetRegister();
-      List<Register> tempReg = [];
-      RegisterProvider instanceRegisterProvider = new RegisterProvider();
+    //RegisterProvider().resetRegister();
+    List<Register> tempReg = [];
+    RegisterProvider instanceRegisterProvider = new RegisterProvider();
 
-      await FirebaseFirestore.instance
-          .collection('registros')
-          .where('horario', isGreaterThan: today)
-          .where('id_user', isEqualTo: userId)
-          .orderBy('horario', descending: false)
-          .limit(2)
-          .get()
-          .then(
-            (snapshot) => snapshot.docs.forEach(
-              (element) {
-                Map<String, dynamic> data =
-                    element.data() as Map<String, dynamic>;
-                Register regs = Register(
-                  horario: data['horario'].toString().substring(11),
-                  userId: data['id_user'].toString(),
-                  email: data['e_mail'].toString(),
-                  tipo: data['tipo'].toString(),
-                );
-
-                Provider.of<RegisterProvider>(context, listen: false)
-                    .updateRegister(regs);
-
-                instanceRegisterProvider.updateRegister(regs);
-              },
-            ),
-          );
-      //RegisterProvider().updateRegisterInOrOut();
-    }
+    await FirebaseFirestore.instance
+        .collection('registros')
+        .where('horario', isGreaterThan: today)
+        .where('id_user', isEqualTo: userId)
+        .orderBy('horario', descending: false)
+        .limit(4)
+        .get()
+        .then(
+          (snapshot) => snapshot.docs.forEach(
+            (element) {
+              Map<String, dynamic> data =
+                  element.data() as Map<String, dynamic>;
+              Register regs = Register(
+                horario: data['horario'].toString().substring(11),
+                userId: data['id_user'].toString(),
+                email: data['e_mail'].toString(),
+                tipo: data['tipo'].toString(),
+              );
+              Provider.of<RegisterProvider>(context, listen: false)
+                  .updateRegister(regs);
+            },
+          ),
+        );
+    Provider.of<RegisterProvider>(context, listen: false)
+        .updateRegisterInOrOut();
   }
 }
