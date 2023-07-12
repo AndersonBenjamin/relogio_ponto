@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:relogio_ponto/balanceControl.dart';
 import 'package:relogio_ponto/db/registers_db.dart';
 import 'package:relogio_ponto/models/register.dart';
 import '../const/constants.dart';
@@ -13,14 +14,12 @@ class HomePage extends StatelessWidget {
 
   final user = FirebaseAuth.instance.currentUser!;
   DataBase db = DataBase();
-
-  List<Register> _register = [];
-
-  late RegisterProvider instanceRegisterProvider = new RegisterProvider();
+  BalanceControl bControl = new BalanceControl();
 
   @override
   Widget build(BuildContext context) {
     db.getCheck(user.uid.toString(), context);
+    BalanceControl().updateBalance(context);
 
     return Scaffold(
       appBar: myAppBar,
