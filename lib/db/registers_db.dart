@@ -54,5 +54,7 @@ class DataBase {
         );
     Provider.of<RegisterProvider>(context, listen: false)
         .updateRegisterInOrOut();
+
+    //Provider.of<RegisterProvider>(context, listen: false).updateBalance();
   }
 }

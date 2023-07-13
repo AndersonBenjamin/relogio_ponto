@@ -20,8 +20,4 @@ class util {
 
     return "$hours:$minutes:$seconds";
   }
-
-  String balance() {
-    return '';
-  }
 }
