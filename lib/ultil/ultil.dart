@@ -4,7 +4,7 @@ class util {
 
     String formattedDifference = formatDuration(difference);
 
-    print('Difference: $formattedDifference');
+    //print('Difference: $formattedDifference');
     return formattedDifference;
   }
 
