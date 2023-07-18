@@ -130,11 +130,16 @@ var mainDivider = const Divider(height: 30, color: Colors.black54);
 Text mainText(String sText) {
   var textReturn = Text(
     sText,
-    style: TextStyle(
+    style: const TextStyle(
       letterSpacing: 2,
       fontWeight: FontWeight.bold,
       fontSize: 15,
     ),
   );
   return textReturn;
+}
+
+String getCurrentTime() {
+  var now = DateTime.now();
+  return "${now.hour}:${now.minute}:${now.second}";
 }
