@@ -41,89 +41,91 @@ var buttonNav = const GNav(
     ),
     GButton(
       icon: Icons.settings,
-      text: 'Search',
+      text: 'Settings',
     )
   ],
 );
 
-var mainChart = Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    Container(
-      child: Row(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black45),
-              borderRadius: BorderRadius.circular(12.0),
-              color: Colors.white, //add it here
-            ),
-            margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
-            //width: MediaQuery.of(context).size.width * 0.45,
-            width: 200,
-            height: 150,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                (const Text(
-                  '  Saldo Mes  \n   00:19:20 \n\n\n',
-                  style: TextStyle(
-                    letterSpacing: 2,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+Row mainChart(Balance balance) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      Container(
+        child: Row(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                //border: Border.all(color: Colors.black45),
+                //borderRadius: BorderRadius.circular(12.0),
+                color: Colors.white, //add it here
+              ),
+              margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+              //width: MediaQuery.of(context).size.width * 0.45,
+              width: 200,
+              height: 150,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  (const Text(
+                    '  Saldo Mes  \n   00:19:20 \n\n\n',
+                    style: TextStyle(
+                      letterSpacing: 2,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  )),
+                  (Text(
+                    'Intervalo ${balance.interval}',
+                    style: TextStyle(
+                      letterSpacing: 2,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  )),
+                  LinearPercentIndicator(
+                    lineHeight: 13,
+                    percent: balance.percentInterval,
+                    progressColor: Colors.green,
+                    backgroundColor: Colors.green.shade100,
                   ),
-                )),
-                (const Text(
-                  'Intervalo 00:50:25',
-                  style: TextStyle(
-                    letterSpacing: 2,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                )),
-                LinearPercentIndicator(
-                  lineHeight: 13,
-                  percent: 0.80,
-                  progressColor: Colors.green,
-                  backgroundColor: Colors.green.shade100,
-                ),
-              ],
+                ],
+              ),
+              //color: Colors.black12,    //must be removed
             ),
-            //color: Colors.black12,    //must be removed
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black45),
-              borderRadius: BorderRadius.circular(12.0),
-              color: Colors.white, //add it here
-            ),
+            Container(
+              decoration: BoxDecoration(
+                //border: Border.all(color: Colors.black45),
+                //borderRadius: BorderRadius.circular(12.0),
+                color: Colors.white, //add it here
+              ),
 
-            margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
-            //width: MediaQuery.of(context).size.width * 0.45,
-            width: 200,
-            height: 150,
+              margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+              //width: MediaQuery.of(context).size.width * 0.45,
+              width: 200,
+              height: 150,
 
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CircularPercentIndicator(
-                  radius: 130,
-                  lineWidth: 10,
-                  percent: 0.8,
-                  progressColor: Colors.red,
-                  backgroundColor: Colors.red.shade100,
-                  circularStrokeCap: CircularStrokeCap.round,
-                  center: Text('Saldo dia \n   06:41'),
-                )
-              ],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CircularPercentIndicator(
+                    radius: 130,
+                    lineWidth: 10,
+                    percent: balance.percentBalance,
+                    progressColor: Colors.blue,
+                    backgroundColor: Colors.blue.shade100,
+                    circularStrokeCap: CircularStrokeCap.round,
+                    center: Text('Saldo dia \n\n${balance.dayBalance}'),
+                  )
+                ],
+              ),
+              //color: Colors.black12,    //must be removed
             ),
-            //color: Colors.black12,    //must be removed
-          ),
-        ],
-      ),
-    )
-  ],
-);
+          ],
+        ),
+      )
+    ],
+  );
+}
 
 var mainDivider = const Divider(height: 30, color: Colors.black54);
 
@@ -138,3 +140,11 @@ Text mainText(String sText) {
   );
   return textReturn;
 }
+
+var card = Container(
+    width: 300,
+    height: 120,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+    ));

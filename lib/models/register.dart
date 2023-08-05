@@ -1,4 +1,4 @@
-import 'dart:ffi';
+//import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -102,6 +102,14 @@ class RegisterProvider extends ChangeNotifier {
     _balance.percentInterval = calcularMinutos(
             int.parse(partsInterval[0]), (int.parse(partsInterval[1]))) /
         _balance.intervalDay;
+
+    if (_balance.percentInterval >= 1.0) {
+      _balance.percentInterval = 1.0;
+    }
+
+    if (_balance.percentBalance >= 1.0) {
+      _balance.percentBalance = 1.0;
+    }
 
     notifyListeners();
   }
