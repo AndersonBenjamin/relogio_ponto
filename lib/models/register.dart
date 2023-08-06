@@ -98,71 +98,76 @@ class RegisterProvider extends ChangeNotifier {
       _balance.percentBalance = calcularMinutos(
               int.parse(partsDayBalance[0]), (int.parse(partsDayBalance[1]))) /
           _balance.workday;
+      if (_reg.length > 0) {
+        _balance.percentBalance = calcularMinutos(int.parse(partsDayBalance[0]),
+                (int.parse(partsDayBalance[1]))) /
+            _balance.workday;
 
-      List<String> partsInterval = _balance.interval.split(':');
-      _balance.percentInterval = calcularMinutos(
-              int.parse(partsInterval[0]), (int.parse(partsInterval[1]))) /
-          _balance.intervalDay;
+        List<String> partsInterval = _balance.interval.split(':');
+        _balance.percentInterval = calcularMinutos(
+                int.parse(partsInterval[0]), (int.parse(partsInterval[1]))) /
+            _balance.intervalDay;
+      }
+
+      if (_balance.percentBalance < 0) {
+        _balance.percentBalance = 0;
+      }
+
+      if (_balance.percentBalance > 1) {
+        _balance.percentBalance = 1;
+      }
+
+      if (_balance.percentInterval < 0) {
+        _balance.percentInterval = 0;
+      }
+
+      if (_balance.percentInterval > 1) {
+        _balance.percentInterval = 1;
+      }
+
+      if (_balance.percentInterval >= 1.0) {
+        _balance.percentInterval = 1.0;
+      }
+
+      if (_balance.percentBalance >= 1.0) {
+        _balance.percentBalance = 1.0;
+      }
+
+      notifyListeners();
     }
 
-    if (_balance.percentBalance < 0) {
-      _balance.percentBalance = 0;
+    void resetRegister() {
+      _reg = [];
+      _regIn = [];
+      _regOut = [];
+      //notifyListeners();
     }
-
-    if (_balance.percentBalance > 1) {
-      _balance.percentBalance = 1;
-    }
-
-    if (_balance.percentInterval < 0) {
-      _balance.percentInterval = 0;
-    }
-
-    if (_balance.percentInterval > 1) {
-      _balance.percentInterval = 1;
-    }
-
-    if (_balance.percentInterval >= 1.0) {
-      _balance.percentInterval = 1.0;
-    }
-
-    if (_balance.percentBalance >= 1.0) {
-      _balance.percentBalance = 1.0;
-    }
-
-    notifyListeners();
   }
 
-  void resetRegister() {
-    _reg = [];
-    _regIn = [];
-    _regOut = [];
-    //notifyListeners();
-  }
-}
+  String diffDateHhMmSs(DateTime startDate, DateTime endTime) {
+    Duration difference = endTime.difference(startDate);
 
-String diffDateHhMmSs(DateTime startDate, DateTime endTime) {
-  Duration difference = endTime.difference(startDate);
+    String formattedDifference = formatDuration(difference);
 
-  String formattedDifference = formatDuration(difference);
-
-  print('Difference: $formattedDifference');
-  return formattedDifference;
-}
-
-String formatDuration(Duration duration) {
-  String twoDigits(int n) {
-    if (n >= 10) return "$n";
-    return "0$n";
+    print('Difference: $formattedDifference');
+    return formattedDifference;
   }
 
-  String hours = twoDigits(duration.inHours);
-  String minutes = twoDigits(duration.inMinutes.remainder(60));
-  String seconds = twoDigits(duration.inSeconds.remainder(60));
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
 
-  return "$hours:$minutes:$seconds";
-}
+    String hours = twoDigits(duration.inHours);
+    String minutes = twoDigits(duration.inMinutes.remainder(60));
+    String seconds = twoDigits(duration.inSeconds.remainder(60));
 
-int calcularMinutos(int horas, int minutos) {
-  int totalMinutos = (horas * 60) + minutos;
-  return totalMinutos;
+    return "$hours:$minutes:$seconds";
+  }
+
+  int calcularMinutos(int horas, int minutos) {
+    int totalMinutos = (horas * 60) + minutos;
+    return totalMinutos;
+  }
 }

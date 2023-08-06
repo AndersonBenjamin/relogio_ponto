@@ -148,3 +148,8 @@ var card = Container(
       color: Colors.white,
       borderRadius: BorderRadius.circular(10),
     ));
+
+String getCurrentTime() {
+  var now = DateTime.now();
+  return "${now.hour}:${now.minute}:${now.second}";
+}

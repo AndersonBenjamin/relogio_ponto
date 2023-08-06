@@ -21,7 +21,7 @@ class DataBase {
 
   Future getCheck(String userId, BuildContext context) async {
     // Add the 'BuildContext' parameter
-    Provider.of<RegisterProvider>(context, listen: false).resetRegister();
+    //Provider.of<RegisterProvider>(context, listen: false).resetRegister();
     String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     //RegisterProvider().resetRegister();
