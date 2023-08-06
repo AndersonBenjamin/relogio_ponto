@@ -94,14 +94,32 @@ class RegisterProvider extends ChangeNotifier {
 
     List<String> partsDayBalance = _balance.dayBalance.split(':');
 
-    _balance.percentBalance = calcularMinutos(
-            int.parse(partsDayBalance[0]), (int.parse(partsDayBalance[1]))) /
-        _balance.workday;
+    if (_reg.length > 0) {
+      _balance.percentBalance = calcularMinutos(
+              int.parse(partsDayBalance[0]), (int.parse(partsDayBalance[1]))) /
+          _balance.workday;
 
-    List<String> partsInterval = _balance.interval.split(':');
-    _balance.percentInterval = calcularMinutos(
-            int.parse(partsInterval[0]), (int.parse(partsInterval[1]))) /
-        _balance.intervalDay;
+      List<String> partsInterval = _balance.interval.split(':');
+      _balance.percentInterval = calcularMinutos(
+              int.parse(partsInterval[0]), (int.parse(partsInterval[1]))) /
+          _balance.intervalDay;
+    }
+
+    if (_balance.percentBalance < 0) {
+      _balance.percentBalance = 0;
+    }
+
+    if (_balance.percentBalance > 1) {
+      _balance.percentBalance = 1;
+    }
+
+    if (_balance.percentInterval < 0) {
+      _balance.percentInterval = 0;
+    }
+
+    if (_balance.percentInterval > 1) {
+      _balance.percentInterval = 1;
+    }
 
     if (_balance.percentInterval >= 1.0) {
       _balance.percentInterval = 1.0;

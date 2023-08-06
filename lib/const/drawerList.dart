@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:relogio_ponto/pages/home_page.dart';
 
@@ -18,29 +19,33 @@ class NavigationDrawer extends StatelessWidget {
       );
 }
 
-Widget builderHeader(BuildContext context) => Container(
-      color: Colors.deepPurple,
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top,
+Widget builderHeader(BuildContext context) {
+  final user = FirebaseAuth.instance.currentUser!;
+  return Container(
+    color: Colors.deepPurple,
+    padding: EdgeInsets.only(
+      top: MediaQuery.of(context).padding.top,
+    ),
+    child: Column(children: [
+      CircleAvatar(
+        radius: (52),
+        backgroundImage: AssetImage(
+          'lib/images/pessoal.jpeg',
+        ),
       ),
-      child: Column(children: const [
-        CircleAvatar(
-          radius: (52),
-          backgroundImage: AssetImage(
-            'lib/images/pessoal.jpeg',
-          ),
-        ),
-        SizedBox(height: 12),
-        Text(
-          'Anderson',
-          style: TextStyle(fontSize: 28, color: Colors.white),
-        ),
-        Text(
-          'anderson@teste.com',
-          style: TextStyle(fontSize: 16, color: Colors.white),
-        ),
-      ]),
-    );
+      SizedBox(height: 12),
+      Text(
+        'Anderson',
+        style: TextStyle(fontSize: 28, color: Colors.white),
+      ),
+      Text(
+        '${user.email.toString()}',
+        style: TextStyle(fontSize: 16, color: Colors.white),
+      ),
+    ]),
+  );
+}
+
 Widget builderMenuItems(BuildContext context) => Container(
       padding: const EdgeInsets.all(24),
       child: Wrap(
