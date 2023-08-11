@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:relogio_ponto/pages/home_page.dart';
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({Key? key}) : super(key: key);
+class NaviDrawer extends StatelessWidget {
+  const NaviDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Drawer(
@@ -27,20 +27,20 @@ Widget builderHeader(BuildContext context) {
       top: MediaQuery.of(context).padding.top,
     ),
     child: Column(children: [
-      CircleAvatar(
+      const CircleAvatar(
         radius: (52),
         backgroundImage: AssetImage(
           'lib/images/pessoal.jpeg',
         ),
       ),
-      SizedBox(height: 12),
-      Text(
+      const SizedBox(height: 12),
+      const Text(
         'Anderson',
         style: TextStyle(fontSize: 28, color: Colors.white),
       ),
       Text(
-        '${user.email.toString()}',
-        style: TextStyle(fontSize: 16, color: Colors.white),
+        user.email.toString(),
+        style: const TextStyle(fontSize: 16, color: Colors.white),
       ),
     ]),
   );

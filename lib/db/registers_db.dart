@@ -25,8 +25,11 @@ class DataBase {
     String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     //RegisterProvider().resetRegister();
+
+    Provider.of<RegisterProvider>(context, listen: false).resetRegister();
+
     List<Register> tempReg = [];
-    RegisterProvider instanceRegisterProvider = new RegisterProvider();
+    RegisterProvider instanceRegisterProvider = RegisterProvider();
 
     await FirebaseFirestore.instance
         .collection('registros')
@@ -38,8 +41,7 @@ class DataBase {
         .then(
           (snapshot) => snapshot.docs.forEach(
             (element) {
-              Map<String, dynamic> data =
-                  element.data() as Map<String, dynamic>;
+              Map<String, dynamic> data = element.data();
               Register regs = Register(
                 horario: data['horario'].toString().substring(11),
                 fullDate: data['horario'].toString(),
@@ -52,6 +54,7 @@ class DataBase {
             },
           ),
         );
+    //Provider.of<RegisterProvider>(context, listen: false).resetRegister();
     Provider.of<RegisterProvider>(context, listen: false)
         .updateRegisterInOrOut();
 

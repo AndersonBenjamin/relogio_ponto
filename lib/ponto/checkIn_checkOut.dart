@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import '../const/drawerList.dart';
 
 class CheckIn_CheckOut extends StatelessWidget {
   CheckIn_CheckOut({super.key});
@@ -19,14 +17,15 @@ class CheckIn_CheckOut extends StatelessWidget {
       appBar: AppBar(backgroundColor: Colors.deepPurple, actions: [
         IconButton(
           onPressed: signUserOut,
-          icon: Icon(Icons.logout),
+          icon: const Icon(Icons.logout),
         ),
       ]),
-      drawer: NavigationDrawer(),
+      //drawer: NavigationDrawer(),
+      //drawer: NavigationDrawer(),
       body: Center(
           child: Text(
-        "LOGGED IN! " + user.email!,
-        style: TextStyle(fontSize: 20),
+        "LOGGED IN! ${user.email!}",
+        style: const TextStyle(fontSize: 20),
       )),
     );
   }

@@ -1,14 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:relogio_ponto/models/register.dart';
 
 class InOut extends StatelessWidget {
-  InOut({Key? key}) : super(key: key);
+  const InOut({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +20,7 @@ class InOut extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12.0),
                     color: Colors.white, //add it here
                   ),
-                  margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                  margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
                   width: MediaQuery.of(context).size.width * 0.45,
                   height: 150,
                   child: Column(
@@ -54,7 +49,7 @@ class InOut extends StatelessWidget {
                     color: Colors.white, //add it here
                   ),
 
-                  margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                  margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
                   width: MediaQuery.of(context).size.width * 0.45,
                   height: 150,
 

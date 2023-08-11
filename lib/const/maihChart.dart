@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -32,7 +31,7 @@ class MainChart extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12.0),
                     color: Colors.white, //add it here
                   ),
-                  margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                  margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
                   //width: MediaQuery.of(context).size.width * 0.45,
                   width: 200,
                   height: 150,
@@ -49,7 +48,7 @@ class MainChart extends StatelessWidget {
                       )),
                       (Text(
                         'Intervalo ${balance.interval}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           letterSpacing: 2,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
@@ -72,7 +71,7 @@ class MainChart extends StatelessWidget {
                     color: Colors.white, //add it here
                   ),
 
-                  margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                  margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
                   //width: MediaQuery.of(context).size.width * 0.45,
                   width: 200,
                   height: 150,

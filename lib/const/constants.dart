@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:provider/provider.dart';
 
 import '../models/register.dart';
 
@@ -54,12 +53,12 @@ Row mainChart(Balance balance) {
         child: Row(
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 //border: Border.all(color: Colors.black45),
                 //borderRadius: BorderRadius.circular(12.0),
                 color: Colors.white, //add it here
               ),
-              margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+              margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
               //width: MediaQuery.of(context).size.width * 0.45,
               width: 200,
               height: 150,
@@ -76,7 +75,7 @@ Row mainChart(Balance balance) {
                   )),
                   (Text(
                     'Intervalo ${balance.interval}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       letterSpacing: 2,
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
@@ -93,13 +92,13 @@ Row mainChart(Balance balance) {
               //color: Colors.black12,    //must be removed
             ),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 //border: Border.all(color: Colors.black45),
                 //borderRadius: BorderRadius.circular(12.0),
                 color: Colors.white, //add it here
               ),
 
-              margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+              margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
               //width: MediaQuery.of(context).size.width * 0.45,
               width: 200,
               height: 150,

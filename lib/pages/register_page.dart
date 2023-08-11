@@ -70,10 +70,10 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
 
                 // logo
-                Icon(
+                const Icon(
                   Icons.lock,
                   size: 50,
                 ),
@@ -175,7 +175,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Already have an account?'),
+                    const Text('Already have an account?'),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: widget.onTap,

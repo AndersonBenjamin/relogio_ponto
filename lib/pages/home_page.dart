@@ -4,10 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:relogio_ponto/const/InOut.dart';
+import 'package:relogio_ponto/const/drawerList.dart';
 import 'package:relogio_ponto/db/registers_db.dart';
 import '../const/constants.dart';
-import '../const/drawerList.dart';
-import '../const/maihChart.dart';
 import '../models/register.dart';
 
 class HomePage extends StatelessWidget {
@@ -27,7 +26,8 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: myAppBar,
-      drawer: NavigationDrawer(),
+      //drawer: NavigationDrawer(),
+      drawer: const NaviDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
