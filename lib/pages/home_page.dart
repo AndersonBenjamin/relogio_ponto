@@ -14,15 +14,22 @@ class HomePage extends StatelessWidget {
 
   final user = FirebaseAuth.instance.currentUser!;
   DataBase db = DataBase();
+
+  bool getcheckIni = false;
+
   @override
   Widget build(BuildContext context) {
-    db.getCheck(user.uid.toString(), context);
-
+    if (!getcheckIni) {
+      db.getCheck(user.uid.toString(), context);
+    }
     //var myData = Provider.of<RegisterProvider>(context);
     //var saldo = myData.balanceGet;
 
     Balance balance =
-        Provider.of<RegisterProvider>(context, listen: false).balanceGet;
+        Provider.of<RegisterProvider>(context, listen: true).balanceGet;
+
+    Provider.of<RegisterProvider>(context, listen: false)
+        .updateRegisterInOrOut();
 
     return Scaffold(
       appBar: myAppBar,
