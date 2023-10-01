@@ -69,6 +69,7 @@ class RegisterProvider extends ChangeNotifier {
       } else if (_reg.length == 3) {
         _balance.dayBalance = diffDateHhMmSs(DateTime.parse(_reg[0].fullDate), DateTime.parse(now));
         _balance.interval = diffDateHhMmSs(DateTime.parse(_reg[1].fullDate), DateTime.parse(_reg[2].fullDate));
+        _balance.dayBalance = subtractDurations(_balance.dayBalance, _balance.interval);
       } else if (_reg.length == 2) {
         _balance.dayBalance = diffDateHhMmSs(DateTime.parse(_reg[0].fullDate), DateTime.parse(_reg[1].fullDate));
         _balance.interval = diffDateHhMmSs(DateTime.parse(_reg[1].fullDate), DateTime.parse(now));
@@ -129,7 +130,7 @@ class RegisterProvider extends ChangeNotifier {
 
     String formattedDifference = formatDuration(difference);
 
-    print('Difference: $formattedDifference');
+    //print('Difference: $formattedDifference');
     return formattedDifference;
   }
 
