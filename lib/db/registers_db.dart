@@ -6,25 +6,14 @@ import 'package:provider/provider.dart';
 import '../models/register.dart';
 
 class DataBase {
-  Future<dynamic> chekIn(
-      int id, String userId, String email, String tipo) async {
+  Future<dynamic> chekIn(int id, String userId, String email, String tipo) async {
     String now = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
-    await FirebaseFirestore.instance.collection('registros').add({
-      'id': id,
-      'horario': now,
-      'id_user': userId,
-      'e_mail': email,
-      'tipo': tipo
-    });
+    await FirebaseFirestore.instance.collection('registros').add({'id': id, 'horario': now, 'id_user': userId, 'e_mail': email, 'tipo': tipo});
   }
 
   Future getCheck(String userId, BuildContext context) async {
-    // Add the 'BuildContext' parameter
-    //Provider.of<RegisterProvider>(context, listen: false).resetRegister();
     String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-    //RegisterProvider().resetRegister();
 
     Provider.of<RegisterProvider>(context, listen: false).resetRegister();
 
@@ -49,14 +38,12 @@ class DataBase {
                 email: data['e_mail'].toString(),
                 tipo: data['tipo'].toString(),
               );
-              Provider.of<RegisterProvider>(context, listen: false)
-                  .updateRegister(regs);
+              Provider.of<RegisterProvider>(context, listen: false).updateRegister(regs);
             },
           ),
         );
     //Provider.of<RegisterProvider>(context, listen: false).resetRegister();
-    Provider.of<RegisterProvider>(context, listen: false)
-        .updateRegisterInOrOut();
+    Provider.of<RegisterProvider>(context, listen: false).updateRegisterInOrOut();
 
     //Provider.of<RegisterProvider>(context, listen: false).updateBalance();
   }

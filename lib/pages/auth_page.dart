@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:relogio_ponto/pages/home_page.dart';
+import '../db/registers_db.dart';
 import 'login_or_register_page.dart';
 
 class AuthPage extends StatelessWidget {

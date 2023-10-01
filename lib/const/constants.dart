@@ -54,13 +54,13 @@ Row mainChart(Balance balance) {
           children: <Widget>[
             Container(
               decoration: const BoxDecoration(
-                //border: Border.all(color: Colors.black45),
-                //borderRadius: BorderRadius.circular(12.0),
-                color: Colors.white, //add it here
-              ),
+                  //border: Border.all(color: Colors.black45),
+                  //borderRadius: BorderRadius.circular(12.0),
+                  //color: Colors.white, //add it here
+                  ),
               margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
               //width: MediaQuery.of(context).size.width * 0.45,
-              width: 200,
+              width: 180,
               height: 150,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -93,14 +93,14 @@ Row mainChart(Balance balance) {
             ),
             Container(
               decoration: const BoxDecoration(
-                //border: Border.all(color: Colors.black45),
-                //borderRadius: BorderRadius.circular(12.0),
-                color: Colors.white, //add it here
-              ),
+                  //border: Border.all(color: Colors.black45),
+                  //borderRadius: BorderRadius.circular(12.0),
+                  //color: Colors.white, //add it here
+                  ),
 
               margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
               //width: MediaQuery.of(context).size.width * 0.45,
-              width: 200,
+              width: 180,
               height: 150,
 
               child: Column(
