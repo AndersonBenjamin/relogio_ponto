@@ -12,17 +12,12 @@ class _ClockAppState extends State<ClockApp> {
   @override
   void initState() {
     super.initState();
-    // Inicia o timer para atualizar o relógio a cada segundo.
     Timer.periodic(Duration(seconds: 1), _updateTime);
   }
 
   void _updateTime(Timer timer) {
-    // Obtém a hora atual.
     DateTime now = DateTime.now();
-    // Formata a hora no formato HH:MM:SS.
     String formattedTime = "${twoDigits(now.hour)}:${twoDigits(now.minute)}:${twoDigits(now.second)}";
-    // Atualiza a interface do usuário com a hora atual.
-
     if (mounted) {
       setState(() {
         _currentTime = formattedTime;

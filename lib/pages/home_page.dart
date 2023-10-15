@@ -48,10 +48,7 @@ class _HomePageState extends State<HomePage> {
       db.getCheck(user.uid.toString(), context);
       getcheckIni = true;
     }
-
     Provider.of<RegisterProvider>(context, listen: true).updateBalance();
-    Balance balance = Provider.of<RegisterProvider>(context, listen: true).balanceGet;
-
     return Scaffold(
       appBar: myAppBar,
       drawer: const NaviDrawer(),
@@ -61,7 +58,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             ClockApp(),
             mainDivider,
-            mainChart(balance),
+            mainChart(Provider.of<RegisterProvider>(context, listen: true).balanceGet),
             mainDivider,
             InOut(),
           ],
@@ -73,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           db.chekIn(1, user.uid.toString(), user.email.toString(), 'Entrada');
           db.getCheck(user.uid.toString(), context);
         },
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Color.fromARGB(255, 244, 63, 114),
         icon: Icon(Icons.app_registration),
         label: const Text(
           'REGISTRAR',

@@ -11,7 +11,7 @@ void signUserOut() {
 }
 
 var myAppBar = AppBar(
-  backgroundColor: Colors.redAccent,
+  backgroundColor: Color.fromARGB(255, 244, 63, 114),
   actions: const [
     IconButton(
       onPressed: signUserOut,
@@ -21,7 +21,7 @@ var myAppBar = AppBar(
 );
 
 var buttonNav = const GNav(
-  backgroundColor: Colors.redAccent,
+  backgroundColor: Color.fromARGB(255, 244, 63, 114),
   color: Colors.white,
   activeColor: Colors.white,
   gap: 8,
@@ -82,11 +82,7 @@ Row mainChart(Balance balance) {
                     ),
                   )),
                   LinearPercentIndicator(
-                    lineHeight: 13,
-                    percent: balance.percentInterval,
-                    progressColor: Colors.green,
-                    backgroundColor: Colors.green.shade100,
-                  ),
+                      lineHeight: 13, percent: balance.percentInterval, progressColor: Color.fromRGBO(120, 70, 180, 1), backgroundColor: Color.fromRGBO(120, 70, 180, 0.2)),
                 ],
               ),
               //color: Colors.black12,    //must be removed
