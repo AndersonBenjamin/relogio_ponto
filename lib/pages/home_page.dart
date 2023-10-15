@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           db.chekIn(1, user.uid.toString(), user.email.toString(), 'Entrada');
           db.getCheck(user.uid.toString(), context);
         },
-        backgroundColor: Color.fromARGB(255, 244, 63, 114),
+        backgroundColor: Color.fromARGB(255, 99, 32, 185),
         icon: Icon(Icons.app_registration),
         label: const Text(
           'REGISTRAR',

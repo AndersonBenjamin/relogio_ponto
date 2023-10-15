@@ -11,7 +11,7 @@ void signUserOut() {
 }
 
 var myAppBar = AppBar(
-  backgroundColor: Color.fromARGB(255, 244, 63, 114),
+  backgroundColor: Color.fromARGB(255, 99, 32, 185),
   actions: const [
     IconButton(
       onPressed: signUserOut,
@@ -21,7 +21,7 @@ var myAppBar = AppBar(
 );
 
 var buttonNav = const GNav(
-  backgroundColor: Color.fromARGB(255, 244, 63, 114),
+  backgroundColor: Color.fromARGB(255, 99, 32, 185),
   color: Colors.white,
   activeColor: Colors.white,
   gap: 8,
@@ -65,14 +65,20 @@ Row mainChart(Balance balance) {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  (const Text(
-                    '  Saldo Mes  \n   00:19:20 \n\n\n',
-                    style: TextStyle(
+                  (Text(
+                    'Saldo mês ${balance.interval}',
+                    style: const TextStyle(
                       letterSpacing: 2,
                       fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                      fontSize: 12,
                     ),
                   )),
+                  LinearPercentIndicator(
+                    lineHeight: 13,
+                    percent: balance.percentInterval,
+                    progressColor: Color.fromARGB(255, 79, 111, 161),
+                    backgroundColor: Color.fromARGB(255, 189, 208, 239),
+                  ),
                   (Text(
                     'Intervalo ${balance.interval}',
                     style: const TextStyle(
@@ -82,7 +88,11 @@ Row mainChart(Balance balance) {
                     ),
                   )),
                   LinearPercentIndicator(
-                      lineHeight: 13, percent: balance.percentInterval, progressColor: Color.fromRGBO(120, 70, 180, 1), backgroundColor: Color.fromRGBO(120, 70, 180, 0.2)),
+                    lineHeight: 13,
+                    percent: balance.percentInterval,
+                    progressColor: Color.fromARGB(255, 244, 63, 114),
+                    backgroundColor: Color.fromARGB(255, 248, 211, 221),
+                  ),
                 ],
               ),
               //color: Colors.black12,    //must be removed
@@ -106,8 +116,8 @@ Row mainChart(Balance balance) {
                     radius: 130,
                     lineWidth: 10,
                     percent: balance.percentBalance,
-                    progressColor: Colors.blue,
-                    backgroundColor: Colors.blue.shade100,
+                    progressColor: Color.fromARGB(255, 249, 84, 43),
+                    backgroundColor: Color.fromARGB(255, 245, 191, 177),
                     circularStrokeCap: CircularStrokeCap.round,
                     center: Text('Saldo dia \n\n${balance.dayBalance}'),
                   )
